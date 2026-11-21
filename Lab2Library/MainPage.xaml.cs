@@ -15,6 +15,7 @@ public partial class MainPage : ContentPage
     private readonly SearchContext _context;
     private readonly Dictionary<string, (CheckBox Check, Entry Value)> _criteriaControls = new();
     private string? _filePath;
+    private string? _lastHtml;
 
     public MainPage()
     {
@@ -58,7 +59,7 @@ public partial class MainPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Помилка", "Не вдалося прочитати файл: " + ex.Message, "OK");
+            await DisplayAlertAsync("Помилка", "Не вдалося прочитати файл: " + ex.Message, "OK");
         }
     }
 
@@ -97,7 +98,7 @@ public partial class MainPage : ContentPage
     {
         if (_filePath == null)
         {
-            await DisplayAlert("Увага", "Спочатку оберіть XML-файл.", "OK");
+            await DisplayAlertAsync("Увага", "Спочатку оберіть XML-файл.", "OK");
             return;
         }
 
@@ -108,7 +109,7 @@ public partial class MainPage : ContentPage
 
         if (criteria.IsEmpty)
         {
-            await DisplayAlert("Увага", "Позначте хоча б один атрибут і введіть значення.", "OK");
+            await DisplayAlertAsync("Увага", "Позначте хоча б один атрибут і введіть значення.", "OK");
             return;
         }
 
@@ -119,14 +120,13 @@ public partial class MainPage : ContentPage
 
             // трансформація результату в HTML за допомогою XSL
             string html = await HtmlTransformer.TransformAsync(ResultFormatter.ToXml(records));
-            string htmlPath = Path.Combine(FileSystem.AppDataDirectory, "result.html");
-            await File.WriteAllTextAsync(htmlPath, html);
+            _lastHtml = html;
+            SaveButton.IsEnabled = true;
             HtmlView.Source = new HtmlWebViewSource { Html = html };
-            OutputEditor.Text += $"\nHTML збережено: {htmlPath}";
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Помилка", ex.Message, "OK");
+            await DisplayAlertAsync("Помилка", ex.Message, "OK");
         }
     }
 
@@ -140,13 +140,52 @@ public partial class MainPage : ContentPage
             ctl.Check.IsChecked = false;
             ctl.Value.Text = string.Empty;
         }
+        _lastHtml = null;
+        SaveButton.IsEnabled = false;
     }
 
     // ---------- Вихід з підтвердженням ----------
     private async void OnExitClicked(object? sender, EventArgs e)
     {
-        bool yes = await DisplayAlert("Вихід",
+        bool yes = await DisplayAlertAsync("Вихід",
             "Чи дійсно Ви хочете завершити роботу з програмою?", "Так", "Ні");
         if (yes) Application.Current?.Quit();
+    }
+    private async void OnSaveHtmlClicked(object? sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(_lastHtml))
+        {
+            await DisplayAlertAsync("Увага", "Спочатку виконайте пошук.", "OK");
+            return;
+        }
+        try
+        {
+    #if WINDOWS
+            var picker = new Windows.Storage.Pickers.FileSavePicker
+            {
+                SuggestedFileName = "result",
+                SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
+            };
+            picker.FileTypeChoices.Add("HTML-файл", new List<string> { ".html" });
+
+            var window = Application.Current?.Windows.FirstOrDefault()?.Handler?.PlatformView
+                         as Microsoft.UI.Xaml.Window;
+            WinRT.Interop.InitializeWithWindow.Initialize(picker,
+                WinRT.Interop.WindowNative.GetWindowHandle(window));
+
+            var file = await picker.PickSaveFileAsync();
+            if (file == null) return;               // користувач натиснув «Скасувати»
+            await Windows.Storage.FileIO.WriteTextAsync(file, _lastHtml);
+            await DisplayAlertAsync("Готово", "Файл збережено:\n" + file.Path, "OK");
+    #else
+        string path = Path.Combine(FileSystem.AppDataDirectory, "result.html");
+        await File.WriteAllTextAsync(path, _lastHtml);
+        await DisplayAlertAsync("Готово", "Файл збережено:\n" + path, "OK");
+    #endif
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Помилка", "Не вдалося зберегти файл: " + ex.Message, "OK");
+        }
     }
 }

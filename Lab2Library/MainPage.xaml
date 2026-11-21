@@ -61,6 +61,7 @@
                         <Button Grid.Column="1" Text="Clear" BackgroundColor="#6B7280" Clicked="OnClearClicked"/>
                         <Button Grid.Column="2" Text="Вихід" BackgroundColor="#C0392B" Clicked="OnExitClicked"/>
                     </Grid>
+                    <Button x:Name="SaveButton" Text="Зберегти HTML" IsEnabled="False" Clicked="OnSaveHtmlClicked" Margin="0,8,0,0"/>
                 </VerticalStackLayout>
             </ScrollView>
         </Border>
