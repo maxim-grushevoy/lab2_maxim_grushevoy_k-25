@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library department="Кафедра програмної інженерії">
+  <book id="1" author="Омельчук Л. О." title="Об'єктно-орієнтоване програмування" annotation="Основи ООП мовою C# та шаблони проєктування" qualification="підручник" year="2023" isbn="978-966-00-0001-1">
+    <reader fio="Іваненко Петро Олексійович" faculty="Комп'ютерних наук" department="Програмної інженерії" position="доцент"/>
+    <reader fio="Коваль Марія Іванівна" faculty="Комп'ютерних наук" department="Програмної інженерії" position="студент"/>
+  </book>
+  <book id="2" author="Свистунов А. О." title="Платформа .NET" annotation="Огляд платформи .NET та CLR" qualification="навчальний посібник" year="2022">
+    <reader fio="Шевченко Андрій Васильович" faculty="Інформаційних технологій" department="Комп'ютерних систем" position="викладач"/>
+  </book>
+  <book id="3" author="Гамма Е." title="Прийоми об'єктно-орієнтованого проєктування" qualification="монографія">
+    <reader fio="Бондаренко Олена Петрівна" faculty="Комп'ютерних наук" department="Програмної інженерії" position="професор"/>
+    <reader fio="Мельник Сергій Ігорович" faculty="Інформаційних технологій" department="Штучного інтелекту" position="аспірант"/>
+    <reader fio="Ткаченко Ірина Миколаївна" faculty="Комп'ютерних наук" department="Програмної інженерії"/>
+  </book>
+  <book id="4" author="Фаулер М." title="Рефакторинг" annotation="Покращення існуючого коду" qualification="підручник" year="2019" isbn="978-966-00-0004-2">
+    <reader fio="Іваненко Петро Олексійович" faculty="Комп'ютерних наук" department="Програмної інженерії" position="доцент"/>
+  </book>
+  <book id="5" author="Троелсен Е." title="C# та платформа .NET" year="2021">
+    <reader fio="Коваленко Дмитро Сергійович" faculty="Інформаційних технологій" department="Комп'ютерних систем" position="студент"/>
+    <reader fio="Шевченко Андрій Васильович" faculty="Інформаційних технологій" department="Комп'ютерних систем" position="викладач"/>
+  </book>
+  <book id="6" author="Мартін Р." title="Чистий код" annotation="Мистецтво розробки програмного забезпечення" qualification="практичний посібник" year="2020" isbn="978-966-00-0006-3">
+    <reader fio="Бондаренко Олена Петрівна" faculty="Комп'ютерних наук" department="Програмної інженерії" position="професор"/>
+  </book>
+  <book id="7" author="Мартін Р." title="Архітектура програмного забезпечення" qualification="підручник">
+    <reader fio="Мельник Сергій Ігорович" faculty="Інформаційних технологій" department="Штучного інтелекту" position="аспірант"/>
+  </book>
+</library>
