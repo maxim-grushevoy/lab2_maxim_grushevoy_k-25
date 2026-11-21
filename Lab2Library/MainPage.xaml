@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab2Library.MainPage"
+             Title="Кафедральна бібліотека"
+             BackgroundColor="#EEF1F7">
+
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="#1F2937"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style x:Key="Caption" TargetType="Label">
+            <Setter Property="TextColor" Value="#6B7280"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style TargetType="Entry">
+            <Setter Property="TextColor" Value="#111827"/>
+            <Setter Property="PlaceholderColor" Value="#9CA3AF"/>
+            <Setter Property="BackgroundColor" Value="#F9FAFB"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Color" Value="#2F5FD0"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="#2F5FD0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="HeightRequest" Value="40"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid Padding="16" ColumnSpacing="16" ColumnDefinitions="400,*">
+
+        <!-- ЛІВА ПАНЕЛЬ: керування -->
+        <Border Grid.Column="0" BackgroundColor="White" Stroke="#D9DEE8" StrokeThickness="1" Padding="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="12"/>
+            </Border.StrokeShape>
+            <ScrollView>
+                <VerticalStackLayout Padding="18" Spacing="12">
+
+                    <Label Text="Кафедральна бібліотека" FontSize="22" FontAttributes="Bold" TextColor="#1E3A8A"/>
+                    <Label Text="Пошук в XML-файлі" Style="{StaticResource Caption}"/>
+
+                    <Button Text="📂  Обрати XML-файл" Clicked="OnPickFileClicked"/>
+                    <Label x:Name="FileLabel" Text="Файл не обрано" Style="{StaticResource Caption}"/>
+
+                    <Label Text="Метод аналізу" FontAttributes="Bold" Margin="0,6,0,0"/>
+                    <Picker x:Name="StrategyPicker" TextColor="#111827" BackgroundColor="#F9FAFB"
+                            SelectedIndexChanged="OnStrategyChanged"/>
+
+                    <Label Text="Параметри пошуку" FontAttributes="Bold" Margin="0,6,0,0"/>
+                    <Label Text="Позначте хоча б один атрибут і введіть значення" Style="{StaticResource Caption}"/>
+                    <VerticalStackLayout x:Name="CriteriaPanel" Spacing="6"/>
+
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,10,0,0">
+                        <Button Grid.Column="0" Text="Пошук" Clicked="OnSearchClicked"/>
+                        <Button Grid.Column="1" Text="Clear" BackgroundColor="#6B7280" Clicked="OnClearClicked"/>
+                        <Button Grid.Column="2" Text="Вихід" BackgroundColor="#C0392B" Clicked="OnExitClicked"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Border>
+
+        <!-- ПРАВА ПАНЕЛЬ: результати -->
+        <Grid Grid.Column="1" RowDefinitions="0,*" RowSpacing="0">
+            <Border Grid.Row="0" BackgroundColor="White" Stroke="#D9DEE8" StrokeThickness="1" Padding="10">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12"/>
+                </Border.StrokeShape>
+                <Editor x:Name="OutputEditor" IsVisible="False" IsReadOnly="True" FontSize="13" TextColor="#1F2937"
+                        BackgroundColor="Transparent" Placeholder="Тут з'явиться результат пошуку (текст)"
+                        PlaceholderColor="#9CA3AF"/>
+            </Border>
+            <Border Grid.Row="1" BackgroundColor="White" Stroke="#D9DEE8" StrokeThickness="1" Padding="4">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12"/>
+                </Border.StrokeShape>
+                <WebView x:Name="HtmlView"/>
+            </Border>
+        </Grid>
+    </Grid>
+</ContentPage>
